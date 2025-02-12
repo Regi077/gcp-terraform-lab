@@ -1,36 +1,42 @@
-name: Deploy to GCP
+name: Deploy to GCP  # Name of the workflow
 
 on:
   push:
-    branches: [main]
+    branches: [main]  # Run this workflow ONLY when code is pushed to the "main" branch
 
 env:
-  TF_VERSION: latest
-  GCP_PROJECT: utility-emblem-450718-d0  
+  TF_VERSION: latest  # Use the latest Terraform version
+  GCP_PROJECT: ${{ secrets.GCP_PROJECT }}  # Use your GCP Project ID from GitHub Secrets
 
 jobs:
-  deploy:
-    runs-on: ubuntu-latest
+  deploy:  # This is the job name
+    runs-on: ubuntu-latest  # Run this job on a GitHub-hosted Linux machine
 
     steps:
+      # Step 1: Check out (download) your code from GitHub
       - name: Checkout code
         uses: actions/checkout@v4
 
+      # Step 2: Authenticate to GCP using your saved credentials
       - name: Setup GCP Auth
         uses: google-github-actions/auth@v1
         with:
           credentials_json: ${{ secrets.GOOGLE_CREDENTIALS }}
 
+      # Step 3: Install Terraform on the GitHub Actions machine
       - name: Setup Terraform
         uses: hashicorp/setup-terraform@v2
         with:
           terraform_version: ${{ env.TF_VERSION }}
 
+      # Step 4: Initialize Terraform (download plugins)
       - name: Terraform Init
         run: terraform init
 
+      # Step 5: Generate a plan (preview changes)
       - name: Terraform Plan
         run: terraform plan -var="gcp_project=$GCP_PROJECT"
 
+      # Step 6: Apply changes (deploy to GCP)
       - name: Terraform Apply
         run: terraform apply -auto-approve -var="gcp_project=$GCP_PROJECT"
