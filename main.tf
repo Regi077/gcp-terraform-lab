@@ -40,13 +40,6 @@ resource "google_project_iam_member" "cloud_run_viewer" {
   member  = "user:cv.brainiac@gmail.com"  # <-- YOUR EMAIL IS HERE
 }
 
-# Encrypt Terraform State in GCS Bucket
-terraform {
-  backend "gcs" {
-    bucket = "tf-state-REPLACE_WITH_YOUR_GCP_PROJECT_ID"  # Replace with your bucket name
-    prefix = "terraform/state"
-  }
-}
 
 # Variable for GCP Project ID
 variable "gcp_project" {
