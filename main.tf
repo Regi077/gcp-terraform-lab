@@ -19,10 +19,6 @@ resource "google_cloud_run_service" "default" {
     }
   }
 
-  traffic {
-    percent         = 100
-    latest_revision = true
-  }
 
   depends_on = [google_project_service.cloudrun]
 }
@@ -40,16 +36,6 @@ resource "google_project_iam_member" "cloud_run_viewer" {
   member  = "user:cv.brainiac@gmail.com"
 }
 
-resource "google_compute_firewall" "deny_ingress" {
-  name    = "block-all-ingress"
-  network = "default"
-
-  deny {
-    protocol = "all"
-  }
-
-  priority = 1000
-}
 
 variable "gcp_project" {
   description = "Your GCP Project ID"
