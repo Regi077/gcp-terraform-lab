@@ -37,7 +37,7 @@ resource "google_cloud_run_service_iam_member" "public_access" {
 resource "google_project_iam_member" "cloud_run_viewer" {
   project = var.gcp_project
   role    = "roles/viewer"
-  member  = "cv.brainiac@gmail.com"
+  member  = "user:cv.brainiac@gmail.com"
 }
 
 resource "google_compute_firewall" "deny_ingress" {
