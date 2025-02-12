@@ -55,3 +55,11 @@ variable "gcp_project" {
   description = "Your GCP Project ID"
   type        = string
 }
+
+
+terraform {
+  backend "gcs" {
+    bucket = "tf-state-utility-emblem-450718-d0"
+    prefix = "terraform/state"
+  }
+}
